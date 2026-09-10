@@ -1,0 +1,14 @@
+{
+  "name": "publishers-service",
+  "version": "1.0.0",
+  "description": "Tarea 3 - publishers microservice (Vercel Functions + Turso)",
+  "scripts": {
+    "dev": "vercel dev --listen 8789"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0"
+  },
+  "devDependencies": {
+    "vercel": "^39.1.0"
+  }
+}

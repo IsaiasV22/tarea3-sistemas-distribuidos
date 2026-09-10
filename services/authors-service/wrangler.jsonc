@@ -1,0 +1,12 @@
+{
+  "name": "authors-service",
+  "compatibility_date": "2026-08-24",
+  "main": "./worker/index.js",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "authors-service-db",
+      "database_id": "REEMPLAZAR-CON-EL-ID-QUE-MUESTRA-EL-DASHBOARD-DE-D1"
+    }
+  ]
+}
