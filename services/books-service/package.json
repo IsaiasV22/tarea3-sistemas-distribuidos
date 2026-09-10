@@ -1,0 +1,14 @@
+{
+  "name": "books-service",
+  "version": "1.0.0",
+  "description": "Tarea 3 - books microservice (Netlify Functions + Neon)",
+  "scripts": {
+    "dev": "netlify dev --port 8787"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.7"
+  },
+  "devDependencies": {
+    "netlify-cli": "^18.9.4"
+  }
+}

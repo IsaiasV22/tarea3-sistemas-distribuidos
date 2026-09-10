@@ -1,0 +1,14 @@
+{
+  "name": "reviews-service",
+  "version": "1.0.0",
+  "description": "Tarea 3 - reviews microservice (Netlify Functions + Neon)",
+  "scripts": {
+    "dev": "netlify dev --port 8790"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.7"
+  },
+  "devDependencies": {
+    "netlify-cli": "^18.9.4"
+  }
+}
