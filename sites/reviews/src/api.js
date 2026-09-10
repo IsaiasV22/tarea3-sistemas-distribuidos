@@ -1,3 +1,4 @@
-export const reviewsApi = "https://<tu-sitio-reviews-service>.netlify.app";
+export const reviewsApi =
+  "https://tarea3-sisdis-reviewsservice-isaiasv.netlify.app";
 
-export const booksMinisite = "https://<tu-mini-sitio-de-libros>";
+export const booksMinisite = "https://tarea3-sisdis-books-isaiasv.netlify.app";
