@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Publishers Example Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <script src="https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.iife.js" defer></script>
+</head>
+<body>
+  <div class="container" v-scope="{ state }">
+
+    <div class="row" v-show="state.view === 'list'" style="margin-top: 5%">
+      <h3>Publishers Information</h3>
+      This section presents information about publishers
+      <ul>
+        <li v-for="p in state.publishers" :key="p.id">
+          <a href="#" @click.prevent="location.hash = '/show/' + p.id">{{ p.publisher }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row" v-show="state.view === 'detail'" style="margin-top: 5%">
+      <div class="eleven column">
+        <h4>{{ state.publisher.publisher }}</h4>
+        <h5>Publisher's details</h5>
+        <form>
+          <div class="row">
+            <div class="six columns">
+              <label>ID</label>
+              <input class="u-full-width" type="text" :value="state.publisher.id" readonly>
+            </div>
+            <div class="six columns">
+              <label>Country</label>
+              <input class="u-full-width" type="text" :value="state.publisher.country" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="six columns">
+              <label>Founded</label>
+              <input class="u-full-width" type="text" :value="state.publisher.founded" readonly>
+            </div>
+            <div class="six columns">
+              <label>Genere</label>
+              <input class="u-full-width" type="text" :value="state.publisher.genere" readonly>
+            </div>
+          </div>
+        </form>
+        <h5>Books</h5>
+        <ul>
+          <li v-for="b in state.publisher.books" :key="b.book_id">
+            <a :href="state.booksMinisite + '/#/show/' + b.book_id">{{ b.title }}</a>
+          </li>
+        </ul>
+        <a class="button button-primary" href="#" @click.prevent="location.hash = '/'">Back</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const { createApp, reactive } = PetiteVue;
+
+      const publishersApi = 'https://<tu-proyecto-publishers-service>.vercel.app';
+
+      const state = reactive({
+        view: 'list',
+        publishers: [],
+        publisher: {id:'', publisher:'', country:'', founded:'', genere:'', books:[]},
+        booksMinisite: 'https://<tu-mini-sitio-de-libros>',
+      });
+
+      function route() {
+        const hash = location.hash.replace(/^#/, '') || '/';
+        const match = hash.match(/^\/show\/(.+)$/);
+        if (match) {
+          state.view = 'detail';
+          findPublisher(match[1]);
+        } else {
+          state.view = 'list';
+        }
+      }
+
+      function allPublishers() {
+        fetch(publishersApi + '/api/publishers', { headers: {'Accept': 'application/json'} })
+          .then((r) => r.json())
+          .then((result) => { state.publishers = result; });
+      }
+
+      function findPublisher(id) {
+        fetch(publishersApi + '/api/publishers/' + id, { headers: {'Accept': 'application/json'} })
+          .then((r) => r.json())
+          .then((result) => { state.publisher = result; });
+      }
+
+      createApp({ state }).mount();
+
+      allPublishers();
+      route();
+      window.addEventListener('hashchange', route);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Authors Example Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+</head>
+<body>
+  <div class="container" x-data="authorsApp()" x-init="init()">
+
+    <div class="row" x-show="view === 'list'" style="margin-top: 5%">
+      <h3>Authors Information</h3>
+      This section presents information about the authors of books
+      <ul>
+        <template x-for="a in authors" :key="a.id">
+          <li><a href="#" @click.prevent="location.hash = '/show/' + a.id" x-text="a.author"></a></li>
+        </template>
+      </ul>
+    </div>
+
+    <div class="row" x-show="view === 'detail'" style="margin-top: 5%">
+      <div class="eleven column">
+        <h4 x-text="author.author"></h4>
+        <h5>Author's details</h5>
+        <form>
+          <div class="row">
+            <div class="six columns">
+              <label>ID</label>
+              <input class="u-full-width" type="text" :value="author.id" readonly>
+            </div>
+            <div class="six columns">
+              <label>Nationality</label>
+              <input class="u-full-width" type="text" :value="author.nationality" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="six columns">
+              <label>Birth Year</label>
+              <input class="u-full-width" type="text" :value="author.birth_year" readonly>
+            </div>
+            <div class="six columns">
+              <label>Fields</label>
+              <input class="u-full-width" type="text" :value="author.fields" readonly>
+            </div>
+          </div>
+        </form>
+        <h5>Books</h5>
+        <ul>
+          <template x-for="b in author.books" :key="b.book_id">
+            <li><a :href="booksMinisite + '/#/show/' + b.book_id" x-text="b.title"></a></li>
+          </template>
+        </ul>
+        <a class="button button-primary" href="#" @click.prevent="location.hash = '/'">Back</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const authorsApi = 'https://authors-service.<tu-subdominio>.workers.dev';
+    const booksMinisite = 'https://<tu-mini-sitio-de-libros>';
+
+    function authorsApp() {
+      return {
+        view: 'list',
+        authors: [],
+        author: {id:'', author:'', nationality:'', birth_year:'', fields:'', books:[]},
+        booksMinisite,
+        init() {
+          this.allAuthors();
+          this.route();
+          window.addEventListener('hashchange', () => this.route());
+        },
+        route() {
+          const hash = location.hash.replace(/^#/, '') || '/';
+          const match = hash.match(/^\/show\/(.+)$/);
+          if (match) {
+            this.view = 'detail';
+            this.findAuthor(match[1]);
+          } else {
+            this.view = 'list';
+          }
+        },
+        allAuthors() {
+          fetch(authorsApi + '/api/authors', { headers: {'Accept': 'application/json'} })
+            .then((r) => r.json())
+            .then((result) => { this.authors = result; });
+        },
+        findAuthor(id) {
+          fetch(authorsApi + '/api/authors/' + id, { headers: {'Accept': 'application/json'} })
+            .then((r) => r.json())
+            .then((result) => { this.author = result; });
+        }
+      }
+    }
+  </script>
+</body>
+</html>
