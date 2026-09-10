@@ -9,6 +9,6 @@
     "@neondatabase/serverless": "^1.1.0"
   },
   "devDependencies": {
-    "netlify-cli": "^18.9.4"
+    "netlify-cli": "^27.5.2"
   }
 }
