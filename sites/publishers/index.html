@@ -63,13 +63,13 @@
     document.addEventListener('DOMContentLoaded', () => {
       const { createApp, reactive } = PetiteVue;
 
-      const publishersApi = 'https://<tu-proyecto-publishers-service>.vercel.app';
+      const publishersApi = 'https://publishersservice-tarea3-sisdis.vercel.app';
 
       const state = reactive({
         view: 'list',
         publishers: [],
         publisher: {id:'', publisher:'', country:'', founded:'', genere:'', books:[]},
-        booksMinisite: 'https://<tu-mini-sitio-de-libros>',
+        booksMinisite: 'https://tarea3-sisdis-books-isaiasv.netlify.app',
       });
 
       function route() {
